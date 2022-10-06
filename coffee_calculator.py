@@ -10,5 +10,5 @@ water_gram = gram * ratio
 
 water_ounces = water_gram * 0.035274
 
-print("")
+print("\n)
 print("You should pour " + str(water_ounces) + str(" ounces of water."))
