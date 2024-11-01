@@ -1,7 +1,5 @@
 # Coffee calculator.
-# golden ratio = 1:15 (1 gram of coffee per 15 grams of water); try different ratios as needed
-# TODO: flask app
-
+# golden ratio = 1:15 to 1:18 (1 gram of coffee per 15 grams of water)
 def calculate_coffee_from_water(water_ounces, ratio):
     """Calculates coffee from water."""
     water_grams = water_ounces / 0.035274  # Convert ounces to grams
@@ -26,8 +24,7 @@ def get_positive_float(prompt):
             print("Please enter a positive number.")
 
 def main():
-    """Main script functionality."""
-    print("\n") # double-line break
+    print("\n") 
     print("Welcome to Blake's Coffee Calculator!")
     print("This calculator can help you determine either the amount of water you need for your coffee, or the amount of coffee you need for a given amount of water.")
 
@@ -50,7 +47,5 @@ def main():
         else:
             print("\nInvalid input. Please enter 'coffee', 'water', or 'exit'.")
 
-# Run app
 if __name__ == "__main__":
     main()
-
