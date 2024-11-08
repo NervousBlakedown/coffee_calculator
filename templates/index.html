@@ -39,11 +39,14 @@
             gap: 1rem;
         }
 
-        select, input {
-            padding: 0.5rem;
-            border: 1px solid #bbb;
-            border-radius: 5px;
-            font-size: 1rem;
+        .radio-group, .ratio-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        input[type="radio"] {
+            margin-right: 0.3rem;
         }
 
         .button {
@@ -72,23 +75,33 @@
     <div class="container">
         <h1>Blake's Coffee Calculator</h1>
         <form method="POST">
-            <label for="option">What would you like to calculate?</label>
-            <select name="option" id="option" required>
-                <option value="" disabled selected>Select an option</option>
-                <option value="coffee">Calculate water needed</option>
-                <option value="water">Calculate coffee needed</option>
-            </select>
+            <label>Water or Beans amount needed?</label>
+            <div class="radio-group">
+                <input type="radio" name="option" id="water" value="water" required>
+                <label for="water">Beans</label>
+                <input type="radio" name="option" id="coffee" value="coffee" required>
+                <label for="coffee">Water</label>
+            </div>
 
-            <label for="ratio">Enter coffee preference ('15' for 1:15 ratio, '18' for 1:18 ratio, etc.; 15-18 recommended):</label>
-            <input type="number" name="ratio" id="ratio" min="15" max="18" step="0.1" required>
+            <label>Choose your coffee ratio</label>
+            <div class="ratio-group">
+                <input type="radio" name="ratio" id="ratio15" value="15" required>
+                <label for="ratio15">1:15</label>
+                <input type="radio" name="ratio" id="ratio16" value="16" required>
+                <label for="ratio16">1:16</label>
+                <input type="radio" name="ratio" id="ratio17" value="17" required>
+                <label for="ratio17">1:17</label>
+                <input type="radio" name="ratio" id="ratio18" value="18" required>
+                <label for="ratio18">1:18</label>
+            </div>
 
             <div id="coffee-inputs" style="display: none;">
-                <label for="coffee_grams">Amount of coffee (grams):</label>
+                <label for="coffee_grams">Amount of coffee (grams)</label>
                 <input type="number" name="coffee_grams" id="coffee_grams" min="1" step="0.1">
             </div>
 
             <div id="water-inputs" style="display: none;">
-                <label for="water_ounces">Amount of water (ounces):</label>
+                <label for="water_ounces">Amount of water (ounces)</label>
                 <input type="number" name="water_ounces" id="water_ounces" min="1" step="0.1">
             </div>
 
@@ -99,21 +112,25 @@
             <div class="result">
                 {{ result }}
             </div>
+            <form action="{{ url_for('download_csv') }}" method="get">
+                <button type="submit" class="button" style="margin-top: 1rem;">Download CSV</button>
+            </form>
         {% endif %}
     </div>
 
     <script>
-        document.getElementById("option").addEventListener("change", function() {
-            const coffeeInputs = document.getElementById("coffee-inputs");
-            const waterInputs = document.getElementById("water-inputs");
+        const coffeeInputs = document.getElementById("coffee-inputs");
+        const waterInputs = document.getElementById("water-inputs");
 
-            if (this.value === "coffee") {
-                coffeeInputs.style.display = "block";
-                waterInputs.style.display = "none";
-            } else if (this.value === "water") {
-                coffeeInputs.style.display = "none";
-                waterInputs.style.display = "block";
-            }
+        // Listen for changes on the radio buttons to show relevant input fields
+        document.getElementById("water").addEventListener("change", function() {
+            coffeeInputs.style.display = "none";
+            waterInputs.style.display = "block";
+        });
+
+        document.getElementById("coffee").addEventListener("change", function() {
+            coffeeInputs.style.display = "block";
+            waterInputs.style.display = "none";
         });
     </script>
 </body>
