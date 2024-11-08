@@ -27,7 +27,6 @@ def index():
     if request.method == 'POST':
         option = request.form.get('option')
         ratio = int(float(request.form.get('ratio')))
-        # ratio = float(request.form.get('ratio'))
         formatted_ratio = f"1:{ratio}"
         
         if option == 'coffee':
@@ -73,14 +72,6 @@ def download_csv():
         if unique_key not in unique_calculations and water_oz and coffee_g and ratio:
             writer.writerow([water_oz, coffee_g, ratio])
             unique_calculations.add(unique_key)
-        """# Only write rows where all fields are filled
-        if water_oz and coffee_g and ratio:
-            unique_key = (water_oz, coffee_g, ratio)
-            if unique_key not in unique_calculations:
-                writer.writerow([water_oz, coffee_g, ratio])
-                unique_calculations.add(unique_key)
-            # writer.writerow([calc.get("water_oz", ""), calc.get("coffee_g", ""), calc.get("ratio", "")])
-            # writer.writerow([calc["water_oz"], calc["coffee_g"], calc["ratio"]])"""
 
     # Convert CSV text data into bytes
     csv_bytes = BytesIO(csv_data.getvalue().encode('utf-8'))
