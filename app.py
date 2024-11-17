@@ -1,41 +1,45 @@
 # Coffee calculator.
-# Golden ratio = 1:15 to 1:18 (1 gram of coffee per 15–18 grams of water)
+# Golden ratio = 1:15 to 1:18 (1 gram of coffee to 15–18 grams of water)
 import csv
 import os
-
 OZ_TO_GRAMS = 0.035274 
-
-# Define the CSV file path
 CSV_FILE_PATH = "C:\\Users\\blake\\Documents\\general_reference\\personal_stuff\\coffee_calculations.csv"
 
-# Check if the CSV file exists and create it with headers if it doesn't
+# Check if CSV file exists and create it with headers if it doesn't
 def initialize_csv():
     if not os.path.exists(CSV_FILE_PATH):
         with open(CSV_FILE_PATH, mode='w', newline='') as file:
             writer = csv.writer(file)
             writer.writerow(["water_oz", "coffee_g", "ratio"])
 
-# Save unique results to the CSV file
+# Save unique results to CSV
 def save_to_csv(water_ounces, coffee_grams, ratio):
     formatted_ratio = f"1:{int(ratio)}"
     coffee_grams = round(coffee_grams, 1)
 
     # Load existing data only once
-    existing_data = set()
+    data = []
+    # existing_data = set()
     if os.path.exists(CSV_FILE_PATH):
         with open(CSV_FILE_PATH, mode='r', newline='') as file:
             reader = csv.reader(file)
             next(reader)  # Skip header row
             for row in reader:
-                # Add each existing row as a tuple to the set
-                existing_data.add((float(row[0]), float(row[1]), row[2]))
+                # Add each existing row as tuple to the set
+                data.append((float(row[0]), float(row[1]), row[2]))
+                # existing_data.add((float(row[0]), float(row[1]), row[2]))
 
-    # Only add new row if it’s not a duplicate
+    # Only add new row if not a duplicate
     new_entry = (water_ounces, coffee_grams, formatted_ratio)
-    if new_entry not in existing_data:
-        with open(CSV_FILE_PATH, mode='a', newline='') as file:
+    if new_entry not in data: # existing_data:
+        data.append(new_entry)
+        # Sort the data: primary by water_ounces, secondary by ratio (e.g., 1:15 to 1:18)
+        data.sort(key=lambda x: (x[0], int(x[2].split(':')[1])))
+        with open(CSV_FILE_PATH, mode='w', newline='') as file:
             writer = csv.writer(file)
-            writer.writerow([water_ounces, coffee_grams, formatted_ratio])
+            writer.writerow(["water_oz", "coffee_g", "ratio"])  # Write headers
+            writer.writerows(data)
+            # writer.writerow([water_ounces, coffee_grams, formatted_ratio])
 
 def calculate_coffee_from_water(water_ounces, ratio):
     """Calculates the amount of coffee needed for a given amount of water."""
